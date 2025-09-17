@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Event Countdown</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        height: 100vh;
+        flex-direction: column;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      background: linear-gradient(135deg, #002f4b, #005f73, #0a9396, #94d2bd);
+      background-size: 400% 400%;
+      animation: gradieshift 15s ease infinite;
+      }
+      @keyframes gradieshift {
+        0% {background-position: 0% 50%; }
+        50% {background-position: 100% 50%; }
+        100%{background-position: 0% 50%; }
+      }
+      h1, p {
+      margin-bottom: 10px 0;
+      }
+      input, button {
+        padding: 10px;
+        margin: 5px;
+        border-radius: 5px;
+        border: none;
+      }
+      button {
+        background: #007bff;
+        color: white;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+      .countdown {
+        font-size: 1.5em;
+        margin-top: 20px;
+        font-weight: bold;
+      }
+    </style>
+</head>
+<body>
+  <h1>Evevnt countdown</h1>
+  
+  <input type="text" id="eventName" placeholder="Enter Event Name">
+  <input type="datetime-local" id="eventDate">
+  <button onclick="startCountdown()">Start Countdown</button>
+  <button onclick="generateShareLink()">Share Link</button>
+  <div id="countdown">
+    <span id="days">0</span>d
+    <span id="hours">0</span>h
+    <span id="minutes">0</span>m
+    <span id="seconds">0</span>s
+  </div>
+  <script src="script.js"></script>
+  <script>
+    // Set your event date here
+      const eventDate = new 
+      Date("2025-12-31T23:59:59").getTime();
+    
+      function updateCountdown() {
+const now = new Date().getTime();
+const distance = eventDate - now;
+if (distance < 0) {
+document.getElementById("countdown").innerHTML = "Event Started!";
+                return;
+}
+      
+
+  const days = 
+  Math.floor(distance / (1000 * 60 * 60 * 24));
+  const hours = 
+  Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = 
+  Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = 
+  Math.floor((distance % (1000 * 60)) / 1000);
+
+  document.getElementById("days").innerText = days;
+  document.getElementById("hours").innerText = hours;
+  document.getElementById("minutes").innerText = minutes;
+  document.getElementById("seconds").innerText = seconds;
+    }
+    function generateShareLink() {
+      const eventName = 
+      document.getElementById("eventName").value
+      const eventDate = 
+      document.getElementById("eventDate").value
+      if (!eventName || !eventDate) {
+        alert("Please enter event details before generating link.");
+        return;
+      }
+      const encodedName = 
+      encodeURIComponent(eventName);
+      const encodedDate = 
+      encodeURIComponent(eventDate);
+      const shareLink = '$ {window.location.origin}${window.location.pathname}name=${encodedName}date=$ {encodedDate}';
+    navigator.clipboard.writeText(shareLink).then(() => {
+      alart("share link copied clipboard!");
+    });
+    }
+    // Auto-load from link if parameters exist
+    const urlparams = new
+URLSearchParams(window.location.search);
+const nameFromURL = 
+urlparams.get("name");
+const dateFromURL = 
+urlparams.get("date");
+if ("nameFromURL && dateFromURL") {
+
+  document.getElementById("eventName").value = decodeURIComponent("dateFromURL");
+
+  Document.getElementById("eventDate").value = decodeURIComponent("dateFromURL");
+  
+  startCountdown(decodeURIComponent("nameFromURL"),
+decodeURIComponent("dateFromURL"));
+}
+setInterval(updateCountdown, 1000);
+updateCountdown();
+  </script>
+</body>
+</html>
